@@ -1,0 +1,10 @@
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.DS_Store
+
+# Never commit local environment values; keep examples tracked.
+.env
+.env.*
+!.env.*.example
