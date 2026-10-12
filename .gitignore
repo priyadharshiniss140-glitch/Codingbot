@@ -1,0 +1,11 @@
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.DS_Store
+
+# Environment files: never commit real database credentials.
+.env
+.env.*
+!.env.example
+!.env.*.example
