@@ -25,15 +25,24 @@ export function useSocket(roomId) {
       setMessages((previous) => [...previous, message]);
     };
 
-    chatSocket.on("chat:message", handleMessage);
-    chatSocket.on("connect", () => {
-      chatSocket.emit("room:join", roomId);
-    });
+    // Queue the initial join before any user message; repeat it after reconnects
+    // because Socket.io room membership is lost when a connection drops.
+    let hasConnected = false;
+    const handleConnect = () => {
+      if (hasConnected) {
+        chatSocket.emit("room:join", roomId);
+      }
+      hasConnected = true;
+    };
 
+    chatSocket.on("chat:message", handleMessage);
+    chatSocket.on("connect", handleConnect);
+    chatSocket.emit("room:join", roomId);
     setSocket(chatSocket);
 
     return () => {
       chatSocket.off("chat:message", handleMessage);
+      chatSocket.off("connect", handleConnect);
       chatSocket.disconnect();
     };
   }, [token, roomId]);
