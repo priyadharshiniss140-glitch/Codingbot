@@ -1,0 +1,10 @@
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.DS_Store
+
+# Environment files: commit examples, not local values
+.env
+.env.*
+!.env.*.example
